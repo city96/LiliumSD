@@ -1,0 +1,58 @@
+/* CSS for worker info card */
+.worker {
+	display: block;
+	position: relative;
+	padding: 12px;
+	margin-bottom: 10px;
+	border-left: 2px solid var(--gray);
+	border-right: 10px solid var(--gray);
+	cursor: default;
+	background-color: var(--dark);
+}
+
+.worker .name {
+	display: block;
+	font-size: 18px;
+	color: var(--high);
+}
+
+.worker .state {
+	font-size: 14px;
+	font-family: monospace, monospace;
+	color: var(--gray);
+}
+
+.worker .id {
+	position: absolute;
+	right: 8px;
+	bottom: 0;
+	padding: 0;
+	font-size: 22px;
+	color: #505050;
+}
+
+.worker .info {
+	position: absolute;
+	top: 5px;
+	right: 8px;
+	color: var(--gray);
+	text-decoration: underline;
+}
+
+.worker .info:hover {
+	color: var(--high);
+}
+
+/* Status display */
+.worker.status_idle {
+	border-right: 10px solid #81f420;
+}
+.worker.status_proc {
+	border-right: 10px solid #81b1f4;
+}
+.worker.status_fail {
+	border-right: 10px solid #f42020;
+}
+.worker.status_lock {
+	border-right: 10px solid #f48120;
+}

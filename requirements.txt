@@ -1,0 +1,7 @@
+pillow
+pyyaml
+torch
+torchvision
+requests
+aiohttp
+tqdm

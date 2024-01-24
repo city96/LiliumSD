@@ -1,3 +1,14 @@
+input/
+output/
+prompt/
+config_*.yaml
+
+*.png
+*.zip
+*.json
+
+# default github .gitignore follows
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

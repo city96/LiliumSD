@@ -1,0 +1,5 @@
+workers:
+ - url: "http://127.0.0.1:8188/"
+   priority: 1.0
+ - url: "http://127.0.0.1:8288/"
+   priority: 1.0

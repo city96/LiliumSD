@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>LiliumSD</title>
+	<meta name="title" content="LiliumSD">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" href="style/default.css">
+	<link rel="icon" type="image/x-icon" href="favicon.ico">
+	<meta name="theme-color" content="#343434">
+</head>
+<body>
+<div id="main">
+	<img id="out" style="visibility: hidden" src=""/>
+	<button id="out-clear" style="visibility: hidden" onclick="clear_main_display()"> X </button>
+	<a class="center-tooltip"> Drop image here or <span style="text-decoration: underline" onclick="main_image_select()"> click to select. </span></a>
+</div>
+<div id="menu">
+	<button class="workspace_switch" id="workspace-switch"> Tiled Sampling </button>
+	<div class="settings">
+		<br>
+		<a> &gtProgress </a>
+		<a id="main-pbar-label" class="label"> [NaN s/tile] </a>
+		<progress id="main-pbar" class="pbar" value="0" max="100"> </progress>
+
+		<button id="button-start" class="control start" onclick="start_job()"> Start </button>
+		<button id="button-abort" class="control abort" onclick="abort_job()"disabled> Abort </button>
+
+		<h3> Workers </h3>
+		<div id="worker-list"></div>
+
+		<h3> Settings </h3>
+
+		<div class="tiling-settings">
+			<a> &gtUpscale input image </a><br>
+			<a style="padding-left: 10px"> &gtScale: </a>
+			<input oninput="image_size_update(this)" type="number" step="0.01" value="1.0", class="image-scale">
+			<a style="padding-left: 10px"> &gtWidth: </a>
+			<input oninput="image_size_update(this)" type="number" min="0" max="32767" step="8" value="0" class="image-width">
+			<a style="padding-left: 10px"> &gtHeight: </a>
+			<input oninput="image_size_update(this)" type="number" min="0" max="32767" step="8" value="0" class="image-height">
+			<br>
+
+			<a> &gtSlicing method </a>
+			<select oninput="tiling_settings_update(this)" class="tiling-name">
+				<option value="NyanTile">NyanTile</option>
+				<option value="USDUS">USDUS</option>
+				<option value="Simple">Simple</option>
+			</select>
+
+			<a> &gtTile size </a>
+			<a class="label"> [1024] </a>
+			<input oninput="label_update(this);tiling_settings_update(this)" class="tiling-size" type="range" min="256" max="2048" step="64" value="1024">
+
+			<a> &gtTile overlap </a>
+			<a class="label"> [128] </a>
+			<input oninput="label_update(this);tiling_settings_update(this)" class="tiling-overlap" type="range" min="0" max="1024" step="8" value="128">
+
+			<a> &gtMask Feather </a>
+			<div class="checkbox-div mask-autofhr-div">
+				<a>(</a><input oninput="tiling_settings_update(this)" class="mask-autofhr" type="checkbox" checked> Auto </input><a>)</a>
+			</div>
+			<a class="label"> [112] </a>
+			<input oninput="label_update(this);tiling_settings_update(this)" class="mask-feather" type="range" min="0" max="1024" step="2" value="112">
+
+			<a> &gtMask Padding </a>
+			<div class="checkbox-div mask-autopad-div">
+				<a>(</a><input oninput="tiling_settings_update(this)" class="mask-autopad" type="checkbox" checked> Auto </input><a>)</a>
+			</div>
+			<a class="label"> [56] </a>
+			<input oninput="label_update(this);tiling_settings_update(this)" class="mask-padding" type="range" min="0" max="1024" step="2" value="56">
+
+			<a> &gtTile image source </a>
+			<select oninput="tiling_settings_update(this)" class="tiling-source">
+				<option value="raw">Input image</option>
+				<option value="out">Processed image</option>
+			</select>
+
+			<a> &gtTile noise source </a>
+			<select oninput="tiling_settings_update(this)" class="tiling-noise">
+				<option value="local">Local (per-tile)</option>
+				<option value="global">Global (image subset)</option>
+			</select>
+
+			<input class="tiling-uniform" type="checkbox"> Force uniform tile size </input><br>
+
+			<input oninput="dry_run_label_update(this)" class="tiling-dryrun" type="checkbox"> Test upscale settings (dry run) </input>
+		</div>
+
+		<h3> Workflow </h3>
+		<a> &gtWorkflow file </a>
+		<a class="label" onclick="update_available_workflows()"> [refresh] </a>
+		<select class="workflow-name" onchange="update_current_workflow()"></select>
+
+		<a> &gtWorkflow upscale factor (input/output size) </a>
+		<a class="label"> [1024=>1024] </a>
+		<input oninput="tiling_settings_update(this)" class="tiling-upscale-factor" type="range" min="1" max="8" step="1" value="1">
+
+		<a> &gtPositive Prompt </a>
+		<a class="label" onclick="set_prompt_from_info('positive')"> [workflow] </a>
+		<a class="label" onclick="set_prompt_from_input('positive')"> [image] </a>
+		<textarea class="prompt workflow-positive-prompt" rows="4"></textarea>
+
+		<a> &gtNegative Prompt </a>
+		<a class="label" onclick="set_prompt_from_info('negative')"> [workflow] </a>
+		<a class="label" onclick="set_prompt_from_input('negative')"> [image] </a>
+		<textarea class="prompt workflow-negative-prompt" rows="4"></textarea>
+	</div>
+</div>
+<div id="logo">
+	<h1> LiliumSD </h1>
+</div>
+<h3 id="error" class="hidden" onclick="dismiss_error_popup()"> Initializing... </h3>
+
+<!-- Random UI elements/etc -->
+<script src="scripts/input.js"></script>
+<!-- Script related to worker handling -->
+<script src="scripts/worker.js"></script>
+<!-- Start/stop/queue/etc -->
+<script src="scripts/exec.js"></script>
+<!-- Status display -->
+<script src="scripts/status.js"></script>
+<!-- Workflow handling -->
+<script src="scripts/workflow.js"></script>
+<!-- Setup basic stuff -->
+<script src="scripts/common.js"></script>
+
+</body>

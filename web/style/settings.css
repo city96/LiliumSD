@@ -1,0 +1,111 @@
+@import "worker.css";
+/* CSS for main info panel */
+
+.settings {
+	height: 100%;
+	padding: 0 15px 50px 20px;
+	overflow-x: scroll;
+	scrollbar-width: thin;
+	scrollbar-gutter: stable;
+}
+
+.settings button {
+	font-size: 20px;
+	margin-top: 20px;
+	padding: 5px;
+	width: 128px;
+	border: none;
+	color: var(--high);
+	background-color: var(--gray);
+}
+
+.settings .start:hover {
+	color: #222;
+	background-color: #f48120;
+}
+.settings .abort:hover {
+	color: #222;
+	background-color: #CC0000;
+}
+
+.settings button:disabled,
+.settings button[disabled] {
+	color: var(--core) !important;
+	background-color: var(--dark) !important;
+}
+
+.settings .label {
+	display: block;
+	float: right;
+	color: var(--gray);
+}
+
+.settings .pbar {
+	width: 100%;
+	border: none;
+	/* border: 2px solid var(--core); */
+	color: var(--high);
+	accent-color: var(--high);
+	background-color: var(--core);
+}
+.settings .pbar::-webkit-progress-value {
+	background: var(--high);
+}
+
+.settings .checkbox-div {
+	display:inline;
+	font-size: 12px;
+}
+
+.settings input[type="number"] {
+	width: 100%;
+	display: block;
+	border: none;
+	outline: none;
+	color: var(--text);
+	background-color: var(--core);
+}
+
+.settings input[type="range"] {
+	-webkit-appearance: none;
+	display: block;
+	width: 100%;
+	border: none;
+	outline: none;
+	border-radius: 0px !important;
+	background-color: var(--core);
+}
+.settings input[type="range"]:disabled,
+.settings input[type="range"][disabled] {
+	background-color: var(--dark) !important;
+}
+
+.settings input[type="range"]::-webkit-slider-thumb,
+.settings input[type="range"]::-moz-range-thumb {
+	/*This doesn't work in chrome but I'm lazy to fix it.*/
+	border: none;
+	border-radius: 0px !important;
+	background: #ffffff;
+	background-color: var(--text);
+}
+
+.settings select {
+	display: block;
+	margin-top: 2px;
+	margin-bottom: 8px;
+	width: 100%;
+	border: none;
+	outline: none;
+	color: var(--high);
+	background-color: var(--core);
+}
+
+.settings textarea {
+	width: 100%;
+	border: none;
+	outline: none;
+	color: var(--high);
+	background-color: var(--core);
+	resize: vertical;
+}
+
